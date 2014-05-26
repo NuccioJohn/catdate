@@ -1,5 +1,7 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
 
   def index
     @profiles = Profile.all
@@ -9,15 +11,14 @@ class ProfilesController < ApplicationController
   end
 
   def new
-    @profile = Profile.new
+    @profile = current_user.profiles.build
   end
 
   def edit
   end
 
   def create
-    @profile = Profile.new(profile_params)
-
+    @profile = current_user.profiles.build(profile_params)
       if @profile.save
         redirect_to @profile, notice: 'Profile was successfully created.'
       else
@@ -44,8 +45,13 @@ class ProfilesController < ApplicationController
       @profile = Profile.find(params[:id])
     end
 
+    def correct_user
+      @profile = current_user.profiles.find_by(id: params[:id])
+      redirect_to profiles_path, notice: "Not authorized to edit this profile" if @profile.nil?
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def profile_params
-      params.require(:profile).permit(:about, :breed)
+      params.require(:profile).permit(:about, :breed, :image)
     end
 end
