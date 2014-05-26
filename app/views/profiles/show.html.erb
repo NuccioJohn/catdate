@@ -1,16 +1,18 @@
-<p id="notice"><%= notice %></p>
+<%= image_tag @profile.image.url(:medium) %>
 
-<p>
+<p class="form-group">
   <strong>About:</strong>
   <%= @profile.about %>
 </p>
 
-<p>
+<p class="form-group">
   <strong>Breed:</strong>
   <%= @profile.breed %>
 </p>
 
-<% if @profile.user == current_user %>
-<%= link_to 'Edit', edit_profile_path(@profile) %> |
-<% end %>
-<%= link_to 'Back', profiles_path %>
+<div class="form-group">
+	<% if @profile.user == current_user %>
+	<%= link_to 'Edit', edit_profile_path(@profile), class: "form-group" %> |
+	<% end %>
+	<%= link_to 'Back', profiles_path, class: "form-group" %>
+</div>
