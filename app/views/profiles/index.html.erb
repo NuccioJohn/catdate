@@ -1,38 +1,23 @@
 <div class="form-group">
-  <h1>Listing profiles</h1>
-</div>
-
-<div class="form-group">
-<table>
-  <thead>
-    <tr>
-      <th>Image</th>
-      <th>About</th>
-      <th>Breed</th>
-      <th>Email</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @profiles.each do |profile| %>
-      <tr>
-        <td><%= image_tag profile.image.url(:medium) %></td>
-        <td><%= profile.about %></td>
-        <td><%= profile.breed %></td>
-        <td><%= profile.user.email if profile.user %></td>
-        <td><%= link_to 'Show', profile, class: "form-group" %></td>
-      <% if profile.user == current_user %>
-        <td><%= link_to 'Edit', edit_profile_path(profile), class: "form-group" %></td>
-        <td><%= link_to 'Destroy', profile, method: :delete, data: { confirm: 'Are you sure?' }, class: "form-group" %></td>
-      <% end %>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-</div>
-
-<div class="form-group">
   <% if user_signed_in? %>
     <%= link_to 'New Profile', new_profile_path, class: "form-group" %>
   <% end %>
 </div>
+<div id="profiles" class="transitions-enabled">
+  <% @profiles.each do |profile| %>
+    <div class="box panel panel-default">
+        <%= image_tag profile.image.url(:medium) %>
+        <div class="panel-body">
+            <%= profile.about %>
+            <%= profile.breed %>
+            <%= profile.user.email if profile.user %>
+        <%= link_to 'Show', profile, class: "form-group" %>
+      <% if profile.user == current_user %>
+        <%= link_to 'Edit', edit_profile_path(profile), class: "form-group" %>
+        <%= link_to 'Destroy', profile, method: :delete, data: { confirm: 'Are you sure?' }, class: "form-group" %>
+      <% end %>
+    </div>
+    </div>
+  <% end %>
+</div>
+
